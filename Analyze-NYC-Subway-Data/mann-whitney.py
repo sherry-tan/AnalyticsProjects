@@ -23,7 +23,7 @@ def entries_histogram(dataframe):
     
     plt.legend()
     plt.show()
-
+    
 def mann_whitney_plus_means(dataframe):
     '''
     This function will calculate:
@@ -42,10 +42,10 @@ def mann_whitney_plus_means(dataframe):
     return with_rain_mean, without_rain_mean, U, 2*p
 
 
-dataframe = pandas.read_csv('/Users/SherryT/Documents/AnalyticsProjects/UND/NYC/turnstile_weather_v1.csv')
-entries_histogram(dataframe)
-    
-with_rain_mean, without_rain_mean, U, p = mann_whitney_plus_means(dataframe)
-print 'with_rain_mean = %.2f ' %with_rain_mean
-print 'without_rain_mean = %.2f'%without_rain_mean
-print 'Two-tailed p-value = %.2f' %p
+if __name__ == "__main__":
+    dataframe = pandas.read_csv('/Users/SherryT/Documents/Projects/Analyze-NYC-Subway-Data/turnstile_weather_v2.csv')
+    entries_histogram(dataframe)
+    with_rain_mean, without_rain_mean, U, p = mann_whitney_plus_means(dataframe)
+    print 'with_rain_mean = %.2f ' %with_rain_mean
+    print 'without_rain_mean = %.2f'%without_rain_mean
+    print 'Two-tailed p-value = %.2f' %p
