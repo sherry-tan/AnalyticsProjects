@@ -1,0 +1,3 @@
+http://regexone.com/lesson/matching_characters
+https://docs.mongodb.org/manual/reference/operator/query/in/
+http://www.regular-expressions.info/anchors.html
