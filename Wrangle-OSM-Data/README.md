@@ -5,6 +5,3 @@ querying to glean insights from the data.
 
 This project is part of the Udacity Data Analyst Nanodegree.
 
-NOTE: Work in Progress. Small subset of Singapore data (small.osm/small.json)
-first used as test case to identify inconsistencies for subsequent cleaning of full data 
-set.
