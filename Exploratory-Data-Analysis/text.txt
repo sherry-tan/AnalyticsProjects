@@ -1,0 +1,8 @@
+1) http://rgm3.lab.nig.ac.jp/RGM/R_rdfile?f=GGally/man/ggcorr.Rd&d=R_CC
+http://docs.ggplot2.org/current/annotate.html
+http://stackoverflow.com/questions/25490321/r-draw-new-layer-behind-current-plot
+http://stackoverflow.com/questions/12245213/how-to-generate-all-possible-combinations-of-vectors-without-caring-for-order
+http://oobaloo.co.uk/visualising-classifier-results-with-ggplot2
+http://www.mathworks.com/examples/statistics/2226-create-and-visualize-discriminant-analysis-classifier
+https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf
+
