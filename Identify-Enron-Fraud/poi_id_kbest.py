@@ -15,7 +15,6 @@ from sklearn.svm import SVC
 from sklearn.preprocessing import MinMaxScaler
 from sklearn import grid_search
 from sklearn.metrics import accuracy_score, precision_score, recall_score
-from sklearn.decomposition import PCA
 
 
 ### Task 1: Select what features you'll use.
@@ -119,20 +118,20 @@ cv = StratifiedShuffleSplit(labels_train, folds, random_state = 17)
 
 
 """
-### INITIAL TUNING OF PARAMETERS, including selection of features. optimum k found to be 13. 
+### INITIAL TUNING OF PARAMETERS, including selection of features. optimum k found to be 8. 
 
 ### set params for gridsearch
-params = dict(feat_select__k = range(4, len(features_list)-1), svm__gamma=[0.01, 0.1, 0.5, 1.0], 
-svm__C= range(10,100,10), svm__kernel=['rbf', 'poly', 'sigmoid', 'linear'])
+params = dict(feat_select__k = range(4, len(features_list)-1), svm__gamma=[0.1, 0.5, 1], 
+svm__C=[1,10,100], svm__kernel=['rbf', 'poly', 'sigmoid'])
 
 estimator = grid_search.GridSearchCV(pipe,  param_grid=params, scoring = 'f1', cv=cv)
 estimator.fit(features_train, labels_train)
 print estimator.best_params_
 #pprint.pprint(estimator.grid_scores_)
 
+"""
 
-
-### identify best k features (k=13) used in POI identifier and save to updated_features list
+### identify best k features (k=8) used in POI identifier and save to updated_features list
 feat_select.set_params(k=13)
 feat_select.fit(features_train, labels_train)
 array1 = feat_select.get_support()
@@ -154,32 +153,14 @@ print "Features used in classifier: ", features_list
 features_train = feat_select.transform(features_train)
 features_test = feat_select.transform(features_test)
 
-
-### k=13 is too many, so include pca to address features that may overlap
 """
-svm.set_params(C=70, kernel='sigmoid', gamma=0.5)
-pca = PCA()
+### RETUNE WITH WIDER RANGE OF PARAMETERS USING OPTIMUM K=8 . Optimum C = 70, gamma = 0.5, kernel = 'sigmoid'
 
-clf = Pipeline(steps=[('scaler', scaler), ('pca',pca), ('svm',svm)])
-clf.fit(features_train, labels_train)
-print clf.named_steps['pca'].explained_variance_ratio_
-#10 components explain at least 1 % of variance
+### set params for gridsearch
+params = dict(svm__gamma=[0.01, 0.1, 0.5, 1.0], 
+svm__C= range(10,100,10), svm__kernel=['rbf', 'poly', 'sigmoid', 'linear'])
 
-pca.set_params(n_components=6)
-clf.fit(features_train, labels_train)
-print clf.named_steps['pca'].explained_variance_ratio_
-
-pred = clf.predict(features_test)
-
-print "Accuracy, Precision and Recall calculated using sklearn.metrics and 70/30 data split :"
-print accuracy_score(labels_test, pred)
-print precision_score(labels_test, pred)
-print recall_score(labels_test, pred)
-
-print "Performance using 100-fold stratified shuffle split: "
-test_classifier(clf, my_dataset, features_list)
-
-"""
+pipe = Pipeline(steps=[('scaler', scaler),('svm',svm)])
 estimator = grid_search.GridSearchCV(pipe,  param_grid=params, scoring = 'f1', cv=cv)
 estimator.fit(features_train, labels_train)
 print estimator.best_params_
@@ -194,7 +175,7 @@ print recall_score(labels_test, pred)
 
 print "Performance using 100-fold stratified shuffle split: "
 test_classifier(estimator, my_dataset, features_list)
-
+"""
 
 ###  FINAL CLASSIFIER
 
@@ -223,4 +204,3 @@ test_classifier(clf, my_dataset, features_list)
 
 dump_classifier_and_data(clf, my_dataset, features_list)
 
-"""
