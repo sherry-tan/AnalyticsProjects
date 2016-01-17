@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+
+    <style>
+      h2 {
+        text-align: center;
+        font-style: arial;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2> Women and more affluent passengers more likely to survive Titanic!</h2>
+    <script type="text/javascript">
+      var svg = dimple.newSvg("body", 1200,800);
+      d3.csv("train_edit.csv", function(data){
+          var myChart = new dimple.chart(svg, data);
+          myChart.setBounds(350, 50, 500 , 380)
+          myChart.defaultColors = [
+          new dimple.color("#8B8386"), 
+          new dimple.color("#1874CD")
+          ]; 
+
+
+          var x = myChart.addCategoryAxis("x", ["Pclass"]); 
+          var y = myChart.addMeasureAxis("y", "Count");
+          myChart.addSeries(["Status"], dimple.plot.bar);
+          //myChart.addColorAxis("Status", ["#DA9694", "#FABF8F"]) 
+          legend = myChart.addLegend(950, 100, 60, 300, "Right");
+          legend.fontSize = 15
+          x.title = "Passenger Class";
+          y.title = "Number of Passengers";
+          x.fontSize = 15;
+          y.fontSize = 15;
+          
+          myChart.storyboard = new dimple.storyboard(myChart, ["Sex"]);
+          myChart.storyboard.addOrderRule(["Both Genders", "Male", "Female"])
+          
+          //myChart.storyboard.categoryFields = ["Sex", "Embarked"]
+          myChart.storyboard.frameDuration = 5000;
+          myChart.storyboard.fontSize = 20;
+          myChart.draw();
+          // play button click handler
+          
+        })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+
+    <style>
+      h2 {
+        text-align: center;
+        font-style: "Arial";
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2> Women and more affluent passengers more likely to survive Titanic!</h2>
+    <script type="text/javascript">
+      var svg = dimple.newSvg("body", 1200,800);
+      d3.csv("train_edit2.csv", function(data){
+          
+          var indicator = new dimple.chart(svg, data);
+          var defaultColor = new dimple.color("#8B8386");
+          var indicatorColor = new dimple.color("#1874CD");
+
+          var firstTick = true;
+
+          indicator.setBounds(950, 80, 210, 100)
+          var y = indicator.addCategoryAxis("y", "Sex");
+          y.addOrderRule("Female", "Male", "Both Genders");
+
+          var x = indicator.addMeasureAxis("x", "Passengers");
+          x.hidden = true;
+
+          var s = indicator.addSeries(null, dimple.plot.bar);
+          s.addEventHandler("click", onClick);
+          
+          indicator.draw();
+
+          y.titleShape.remove();
+
+          // Remove the lines from the y axis
+          y.shapes.selectAll("line,path").remove();
+
+          // Move the y axis text inside the plot area
+          y.shapes.selectAll("text")
+                  .style("text-anchor", "start")
+                  .style("font-size", "14px")
+                  .attr("transform", "translate(18, 0.5)");
+
+          svg.selectAll("title_text")
+                  .data(["Click any bar below to select",
+                      "and pause. Click again",
+                      "to resume animation"])
+                  .enter()
+                  .append("text")
+                  .attr("x", 950)
+                  .attr("y", function (d, i) { return 20 + i * 12; })
+                  .style("font-family", "sans-serif")
+                  .style("font-size", "12px")
+                  .style("color", "Black")
+                  .text(function (d) { return d; });
+
+
+          s.shapes
+                  .attr("rx", 10)
+                  .attr("ry", 10)
+                  .style("fill", function (d) { return (d.y === 'Both Genders' ? indicatorColor.fill : defaultColor.fill) })
+                  .style("stroke", function (d) { return (d.y === 'Both Genders' ? indicatorColor.stroke : defaultColor.stroke) })
+                  .style("opacity", 0.4);
+
+          var myChart = new dimple.chart(svg, data);
+          myChart.setBounds(350, 80, 500 , 380)
+          myChart.defaultColors = [
+          new dimple.color("#990000"), 
+          new dimple.color("#1874CD"),
+          ]; 
+
+
+          var x2 = myChart.addCategoryAxis("x", ["Pclass"]); 
+          var y2 = myChart.addMeasureAxis("y", "Passengers");
+          myChart.addSeries(["Status"], dimple.plot.bar);
+          //s.addEventHandler("click", onClick);
+          legend = myChart.addLegend(780, 20, 60, 100, "center");
+          legend.fontSize = 15;
+          x2.title = "Passenger Class";
+          y2.title = "Number of Passengers";
+          x2.fontSize = 15;
+          y2.fontSize = 15;
+          
+
+          var story = myChart.setStoryboard("Sex", onTick);
+
+          //myChart.storyboard = new dimple.storyboard(myChart, ["Sex"]);
+          //myChart.storyboard.categoryFields = ["Age"];
+
+          story.addOrderRule(["Both Genders", "Male", "Female"])
+        
+          
+          //myChart.storyboard.categoryFields = ["Sex", "Embarked"]
+          story.frameDuration = 3000;
+          story.fontSize = 30;
+          myChart.draw();
+          myChart.legends = [];
+          story.storyLabel.remove();
+
+          
+          // On click of the side chart
+          function onClick(e) {
+              // Pause the animation
+              story.pauseAnimation();
+              // If it is already selected resume the animation
+              // otherwise pause and move to the selected month
+              if (e.yValue == story.getFrameValue()) {
+                  story.startAnimation();
+              } else {
+                  story.goToFrame(e.yValue);
+                  story.pauseAnimation();
+              }
+          }
+
+          // On tick of the main charts storyboard
+          function onTick(e) {
+              if (!firstTick) {
+                  // Color all shapes the same
+                  s.shapes
+                          .transition()
+                          .style("fill", function (d) { return (d.y === e ? indicatorColor.fill : defaultColor.fill) })
+                          .style("stroke", function (d) { return (d.y === e ? indicatorColor.stroke : defaultColor.stroke) });
+              }
+              firstTick = false;
+          }
+          // play button click handler
+          //function onClick() {
+          //    myChart.storyboard.pauseAnimation();
+          //}
+
+          
+        })
+    </script>
+  </body>
+</html>

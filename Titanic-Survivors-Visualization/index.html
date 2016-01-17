@@ -8,6 +8,7 @@
     <style>
       h2 {
         text-align: center;
+        font-style: arial;
       }
     </style>
   </head>
@@ -37,24 +38,14 @@
           y.fontSize = 15;
           
           myChart.storyboard = new dimple.storyboard(myChart, ["Sex"]);
-          //myChart.storyboard.categoryFields = ["Sex", "Age"]
+          myChart.storyboard.addOrderRule(["Both Genders", "Male", "Female"])
+          
+          //myChart.storyboard.categoryFields = ["Sex", "Embarked"]
           myChart.storyboard.frameDuration = 5000;
           myChart.storyboard.fontSize = 20;
           myChart.draw();
           // play button click handler
-          function play() {
-             myChart.storyboard.playAnimation();
-          }
-
-          // pause button click handler
-          function pause() {
-             myChart.storyboard.pauseAnimation();
-          }
-
-          // stop button click handler
-          function pause() {
-              myChart.storyboard.stopAnimation();
-          }
+          
         })
     </script>
   </body>
