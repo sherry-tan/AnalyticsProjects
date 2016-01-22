@@ -4,7 +4,8 @@ This data visualization is based on the Titanic survivors data. Its key
 message is to show that women and more affluent passengers were more
 likely to survive the Titanic disaster.
 
-
+The live webpage for the final visualization is hosted here:
+http://embed.plnkr.co/woBbwOXQHLyOvTGviDB4/
 
 DESIGN
 
