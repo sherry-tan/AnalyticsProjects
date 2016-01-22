@@ -17,16 +17,16 @@
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
     <script type="text/javascript">
-      var svg = dimple.newSvg("#chartContainer", 1200,800);
+      var svg = dimple.newSvg("#chartContainer", 800,600);
       d3.csv("train_edit2.csv", function(data){
           
           //create indicator bars for "Sex"
           var indicator = new dimple.chart(svg, data);
           var defaultColor = new dimple.color("#8B8386");
-          var selectedColor = new dimple.color("#1874CD");
+          var selectedColor = new dimple.color("#FFFF99");
 
           //define indicator position and size
-          indicator.setBounds(950, 80, 210, 100)
+          indicator.setBounds(50, 80, 210, 100)
 
           //add indicator for Sex on y-axis
           var yI = indicator.addCategoryAxis("y", "Sex");
@@ -49,7 +49,7 @@
           yI.shapes.selectAll("text")
                   .style("text-anchor", "start")
                   .style("font-size", "14px")
-                  .attr("transform", "translate(18, 0)");
+                  .attr("transform", "translate(18, 2)");
 
           //add explanatory text for indicator bars
           svg.selectAll("title_text")
@@ -58,11 +58,12 @@
                       "Click again to resume animation"])
                   .enter()
                   .append("text")
-                  .attr("x", 950)
+                  .attr("x", 50)
                   .attr("y", function (d, i) { return 30 + i * 15; })
                   .style("font-family", "Arial")
                   .style("font-size", "14px")
                   .style("color", "Black")
+                  .style("font-weight","Bold")
                   .text(function (d) { return d; });
 
           //change indicator bar appearance and set colors for when selected and when not
@@ -75,10 +76,10 @@
 
           //create main visualization and define position, size and default colors
           var myChart = new dimple.chart(svg, data);
-          myChart.setBounds(350, 80, 500 , 380)
+          myChart.setBounds(380, 80, 300 , 380)
           myChart.defaultColors = [
-          new dimple.color("#990000"), 
-          new dimple.color("#1874CD"),
+          new dimple.color("#1874CD"), 
+          new dimple.color("#990000"),
           ]; 
 
           //Add Pclass and Passenger count to x axis and y axis respectively
@@ -92,10 +93,11 @@
           y.fontSize = 15; 
 
           //create series and bar plot
-          myChart.addSeries("Status", dimple.plot.bar);
+          var myseries = myChart.addSeries("Status", dimple.plot.bar);
+          myseries.addOrderRule(["Survived", "Perished"])
   
           //add legend, position it, and edit its appearance
-          legend = myChart.addLegend(780, 20, 60, 100, "center");
+          legend = myChart.addLegend(510, 20, 60, 100, "center");
           legend.fontSize = 15;
           
           //set chart storyboard and define order of frames, set event handler
@@ -103,7 +105,7 @@
           story.addOrderRule(["Both Genders", "Male", "Female"])
         
           //tweak animation settings
-          story.frameDuration = 3000;
+          story.frameDuration = 6000;
           story.fontSize = 30;
 
           //set tracker for start of animation
@@ -133,7 +135,7 @@
           // On tick of the main charts storyboard
           function onTick(e) {
               if (!firstTick) {
-                  // Color selected shapes
+                  // Color all shapes the same
                   s.shapes
                           .transition()
                           .style("fill", function (d) { return (d.y === e ? selectedColor.fill : defaultColor.fill) })

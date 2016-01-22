@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
 
+  <head>
+    <meta charset="utf-8">    
     <style>
       h2 {
-        text-align: center;
-        font-style: arial;
+        text-align: left;
+        font-style: "Arial";
       }
     </style>
   </head>
 
-  <body>
-    <h2> Women and more affluent passengers more likely to survive Titanic!</h2>
+  <h2> Women and more affluent passengers more likely to survive Titanic!</h2>
+    
+<div id="chartContainer">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
     <script type="text/javascript">
-      var svg = dimple.newSvg("body", 1200,800);
+      var svg = dimple.newSvg("#chartContainer", 1200,800);
       d3.csv("train_edit.csv", function(data){
           var myChart = new dimple.chart(svg, data);
           myChart.setBounds(350, 50, 500 , 380)
@@ -48,5 +49,5 @@
           
         })
     </script>
-  </body>
+  </div>
 </html>
