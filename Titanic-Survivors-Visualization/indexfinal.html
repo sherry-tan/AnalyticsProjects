@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">    
+    <style>
+      h2 {
+        text-align: left;
+        font-style: "Arial";
+      }
+    </style>
+  </head>
+
+  <h2> Women and more affluent passengers more likely to survive Titanic!</h2>
+    
+<div id="chartContainer">
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+    <script type="text/javascript">
+      var svg = dimple.newSvg("#chartContainer", 800,600);
+      d3.csv("train_edit2.csv", function(data){
+          
+          //create indicator bars for "Sex"
+          var indicator = new dimple.chart(svg, data);
+          var defaultColor = new dimple.color("#8B8386");
+          var selectedColor = new dimple.color("#FFFF99");
+
+          //define indicator position and size
+          indicator.setBounds(50, 70, 210, 100);
+
+          //add indicator for Sex on y-axis
+          var yI = indicator.addCategoryAxis("y", "Sex");
+          yI.addOrderRule("Female", "Male", "Both Genders");
+
+          //Use Passenger count on indicator x-axis so that relative lengths of bars show relative numbers of different Sexes
+          var xI = indicator.addMeasureAxis("x", "Passengers");
+          xI.hidden = true;
+
+          //plot indicator and add event handler so that it registers clicks
+          var s = indicator.addSeries(null, dimple.plot.bar);
+          s.addEventHandler("click", onClick);
+          
+          //draw indicator and remove y-axis label, axis and tick marks
+          indicator.draw();
+          yI.titleShape.remove();
+          yI.shapes.selectAll("line,path").remove();
+
+          // Shift category labels for Sex inside bars 
+          yI.shapes.selectAll("text")
+                  .style("text-anchor", "start")
+                  .style("font-size", "14px")
+                  .attr("transform", "translate(18, 2)");
+
+          //add explanatory text for indicator bars
+          svg.selectAll("title_text")
+                  .data(["To pause or select,",
+                      "click any bar below.",
+                      "Click again to resume animation"])
+                  .enter()
+                  .append("text")
+                  .attr("x", 50)
+                  .attr("y", function (d, i) { return 20 + i * 15; })
+                  .style("font-family", "Arial")
+                  .style("font-size", "14px")
+                  .style("color", "Black")
+                  .style("font-weight","Bold")
+                  .text(function (d) { return d; });
+
+          //change indicator bar appearance and set colors for when selected and when not
+          s.shapes
+                  .attr("rx", 15)
+                  .attr("ry", 15)
+                  .style("fill", function (d) { return (d.y === 'Both Genders' ? selectedColor.fill : defaultColor.fill) })
+                  .style("stroke", function (d) { return (d.y === 'Both Genders' ? selectedColor.stroke : defaultColor.stroke) })
+                  .style("opacity", 0.4);
+
+          //create main visualization and define position, size and default colors
+          var myChart = new dimple.chart(svg, data);
+          myChart.setBounds(380, 70, 300 , 380)
+          myChart.defaultColors = [
+          new dimple.color("#1874CD"), 
+          new dimple.color("#990000"),
+          ]; 
+
+          //Add Pclass and Passenger count to x axis and y axis respectively
+          var x = myChart.addCategoryAxis("x", "Pclass"); 
+          var y = myChart.addMeasureAxis("y", "Passengers");
+          y.overrideMax= 400;  
+
+
+          //Edit x and y-axis labels and appearance
+          x.title = "Passenger Class";
+          y.title = "Number of Passengers";
+          x.fontSize = 16;
+          y.fontSize = 16; 
+
+          //create series and bar plot
+          var myseries = myChart.addSeries("Status", dimple.plot.bar);
+          myseries.addOrderRule(["Survived", "Perished"]);
+  
+          //add legend, position it, and edit its appearance
+          legend = myChart.addLegend(450, 40, 200, 20);
+
+          legend.fontSize = 14;
+          
+          //add explanation about Pclasses
+          svg.selectAll("title_text")
+                  .data(["Passenger Class is a proxy for socio-economic status. ",
+                      "1 - Upper; 2 - Middle; 3 - Lower"])
+                  .enter()
+                  .append("text")
+                  .attr("x", 380)
+                  .attr("y", function (d, i) { return 510 + i * 15; })
+                  .style("font-family", "Arial")
+                  .style("font-size", "12px")
+                  .style("color", "Black")
+                  .style("font-style", "italic")
+                  .text(function (d) { return d; });
+          
+          //set chart storyboard and define order of frames, set event handler
+          var story = myChart.setStoryboard("Sex", onTick);
+          story.addOrderRule(["Both Genders", "Male", "Female"])
+        
+          //tweak animation settings
+          story.frameDuration = 6000;
+
+          //set tracker for start of animation
+          var firstTick = true;
+
+          //draw chart
+          myChart.draw();
+
+          //fix legend on page and remove storyboard labels
+          myChart.legends = [];
+          story.storyLabel.remove();
+          
+          // On click of the side chart
+          function onClick(e) {
+              // Pause the animation
+              story.pauseAnimation();
+              
+              // Resume animation if bar is already selected, if not go to the selected frame
+              if (e.yValue == story.getFrameValue()) {
+                  story.startAnimation();
+              } else {
+                  story.goToFrame(e.yValue);
+                  story.pauseAnimation();
+              }
+          }
+
+          // On tick of the main charts storyboard
+          function onTick(e) {
+              if (!firstTick) {
+                  // Color all shapes the same
+                  s.shapes
+                          .transition()
+                          .style("fill", function (d) { return (d.y === e ? selectedColor.fill : defaultColor.fill) })
+                          .style("stroke", function (d) { return (d.y === e ? selectedColor.stroke : defaultColor.stroke) });
+              }
+              firstTick = false;
+          }
+         
+        })
+    </script>
+  </div>
+</html>
