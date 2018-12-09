@@ -8,3 +8,5 @@ wine experts rated the quality of each wine, providing a rating between
 
 This project is part of the Udacity Data Analyst Nanodegree.
 
+Using R and data exploratory techniques, it was found that alcohol and volatile acidity were most likely to affect wine quality ratings. 
+
