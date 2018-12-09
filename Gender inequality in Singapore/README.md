@@ -1,0 +1,1 @@
+This project used gender data from Data@Gov, MOM and the World Bank to study gender differences in Singapore for aspects such as labour force and education, and compared Singapore with countries of similar socioeconomic profiles. Findings were illustrated in static plots and interactive charts using the seaborn and bokeh libraries.
