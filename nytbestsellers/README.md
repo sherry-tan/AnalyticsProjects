@@ -1,3 +1,1 @@
-# projects
-# bestsellers
-
+This project focuses on an analysis of books appearing on New York Times bestseller lists, including : which books and authors appeared the most often, whether there is a relationship between how often an author appears on the list, number of his/her books on the list and the author's average rank. It also explores common themes in the best-selling books using word count analysis of book descriptions.
