@@ -1,0 +1,1 @@
+This project extracted and cleaned data from a sampling of job postings from the STJobs website. A preliminary analysis was conducted on the data to find the best paying jobs, the jobs requiring the least experience and the most common skills required in each industry
