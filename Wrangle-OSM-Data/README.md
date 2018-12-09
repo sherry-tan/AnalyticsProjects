@@ -1,7 +1,4 @@
-This project uses Singapore map data from OpenStreetMap (https://www.openstreetmap.org),
-audits the data for quality, transforms the original XML file into a list of dictionaries
-and saves it as JSON. The resulting JSON file is then imported to MongoDB to facilitate
-querying to glean insights from the data. 
+In this project, a portion of the Singapore OpenStreetMap data was assessed for validity, accuracy, completeness, consistency, and uniformity. Data was cleaned and queried using MongoDB to derive insights, such as the most prevalent amenities in the data set, the most common fast-food restaurants and cafes, and the most common types of cuisines found in eating establishments. Tools used were Python and MongoDB.
 
 This project is part of the Udacity Data Analyst Nanodegree.
 
